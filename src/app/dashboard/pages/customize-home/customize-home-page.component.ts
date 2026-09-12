@@ -7,6 +7,7 @@ import { LivePreviewComponent } from './live-preview.component';
 import { EditorRouterComponent } from './editors/editor-router.component';
 import { AdminLayoutComponent } from '../../../shared/components/layout/admin-layout/admin-layout.component';
 import { PreviewScrollService } from '../../../core/services/page-configs/preview-scroll.service';
+import { dbSyncStatus, forceSaveAllConfigsToDatabase } from '../../../core/services/page-configs/config-sync.util';
 
 @Component({
   selector: 'app-customize-home-page',
@@ -64,22 +65,37 @@ import { PreviewScrollService } from '../../../core/services/page-configs/previe
             </div>
           </div>
 
-          <div class="flex flex-row-reverse items-center gap-2">
+          <div class="flex flex-row-reverse items-center gap-3">
+            <!-- Database Sync Indicator -->
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-300"
+                 [ngClass]="{
+                   'bg-amber-50 text-amber-700 border-amber-200': dbStatus() === 'saving' || isManualSaving,
+                   'bg-emerald-50 text-emerald-700 border-emerald-200': dbStatus() === 'saved' || dbStatus() === 'idle',
+                   'bg-rose-50 text-rose-700 border-rose-200': dbStatus() === 'error'
+                 }">
+              <span class="relative flex h-2 w-2">
+                <span *ngIf="dbStatus() === 'saving' || isManualSaving"
+                      class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2"
+                      [ngClass]="{
+                        'bg-amber-500': dbStatus() === 'saving' || isManualSaving,
+                        'bg-emerald-500': dbStatus() === 'saved' || dbStatus() === 'idle',
+                        'bg-rose-500': dbStatus() === 'error'
+                      }"></span>
+              </span>
+              <span *ngIf="dbStatus() === 'saving' || isManualSaving">جاري الحفظ في قاعدة البيانات...</span>
+              <span *ngIf="dbStatus() === 'saved'">تم الحفظ في قاعدة البيانات</span>
+              <span *ngIf="dbStatus() === 'idle'">متصل بقاعدة البيانات</span>
+              <span *ngIf="dbStatus() === 'error'">تعذر الحفظ في قاعدة البيانات</span>
+            </div>
+
             <button
-              class="p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
-              [attr.title]="'DASHBOARD.AUTO_STR_350' | translate"
-            >
-              <lucide-icon name="undo-2" [size]="20"></lucide-icon>
-            </button>
-            <button
-              class="p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
-              [attr.title]="'DASHBOARD.AUTO_STR_351' | translate"
-            >
-              <lucide-icon name="redo-2" [size]="20"></lucide-icon>
-            </button>
-            <button class="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200 mr-2">
+              type="button"
+              (click)="manualSave()"
+              [disabled]="isManualSaving || dbStatus() === 'saving'"
+              class="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
               <lucide-icon name="lock" [size]="16" class="mb-0.5"></lucide-icon>
-              <span>{{ 'DASHBOARD.AUTO_STR_224' | translate }}</span>
+              <span>{{ (isManualSaving || dbStatus() === 'saving') ? 'جاري الحفظ...' : 'حفظ في قاعدة البيانات' }}</span>
             </button>
           </div>
         </div>
@@ -104,6 +120,15 @@ export class CustomizeHomePageComponent implements OnInit, OnDestroy {
   previewMode: 'mobile' | 'desktop' = 'mobile';
   currentRoute: string = '/';
   private scrollSub?: Subscription;
+
+  readonly dbStatus = dbSyncStatus;
+  isManualSaving = false;
+
+  async manualSave() {
+    this.isManualSaving = true;
+    await forceSaveAllConfigsToDatabase();
+    this.isManualSaving = false;
+  }
 
   constructor(
     private zone: NgZone,

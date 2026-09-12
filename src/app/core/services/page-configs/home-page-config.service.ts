@@ -7,11 +7,9 @@ import { PageConfig } from '../../models/config.model';
 import { sanitizeWithInitial } from '../../utils/config-sanitizer';
 import { homeCategories, homeProducts } from '../../../shared/data/homePageData';
 import { environment } from '../../../../environments/environment';
+import { broadcastConfig, listenForConfig } from './config-sync.util';
 
 const CONFIG_KEY = 'loxxking-homepage-config';
-const INSTANCE_ID = typeof crypto !== 'undefined' && crypto.randomUUID 
-  ? crypto.randomUUID() 
-  : Math.random().toString(36).substring(2) + Date.now().toString(36);
 
 const heroVisual = '/assets/home/hero-visual-hd.png';
 const offerBanner = '/assets/home/offer-products-banner-hd.png';
@@ -117,44 +115,24 @@ export class HomePageConfigService {
       // 1. Fetch persistent configuration from Backend API on boot
       this.fetchFromBackend();
 
-      // 2. Cross-tab/frame synchronization with echo prevention
-      const applyExternalConfig = (key: string | null, newValue: string | null, sourceId?: string) => {
-        if (sourceId === INSTANCE_ID) {
-          return; // Discard self-triggered synthetic events
-        }
+      listenForConfig(this.storageKey, (json) => {
+        if (json === this.lastSavedJson) return;
+        try {
+          const merged = this.mergeWithInitial(JSON.parse(json));
+          const mergedJson = JSON.stringify(merged);
+          if (mergedJson === this.lastSavedJson) return;
 
-        if (key === this.storageKey && newValue) {
-          if (newValue === this.lastSavedJson) return; // Discard echo / identical payload
-
-          try {
-            const updated = JSON.parse(newValue);
-            const merged = this.mergeWithInitial(updated);
-            const mergedJson = JSON.stringify(merged);
-            if (mergedJson === this.lastSavedJson) return;
-
-            this.zone.run(() => {
-              this.isApplyingExternalUpdate = true;
-              this.lastSavedJson = mergedJson;
-              this.pageConfig.set(merged);
-              queueMicrotask(() => {
-                this.isApplyingExternalUpdate = false;
-              });
+          this.zone.run(() => {
+            this.isApplyingExternalUpdate = true;
+            this.lastSavedJson = mergedJson;
+            this.pageConfig.set(merged);
+            queueMicrotask(() => {
+              this.isApplyingExternalUpdate = false;
             });
-          } catch (_) {}
-        }
-      };
-
-      window.addEventListener('storage', (e: StorageEvent) => {
-        applyExternalConfig(e.key, e.newValue, (e as any).__sourceInstanceId);
+          });
+        } catch (_) {}
       });
 
-      window.addEventListener('message', (e: MessageEvent) => {
-        if (e.data?.type === 'STORAGE_SYNC') {
-          applyExternalConfig(e.data.key, e.data.newValue, e.data.__sourceInstanceId);
-        }
-      });
-
-      // 3. Keep local cache in sync and broadcast to preview iframes
       effect(() => {
         const config = this.pageConfig();
         const stringified = JSON.stringify(config);
@@ -163,33 +141,7 @@ export class HomePageConfigService {
         if (stringified === this.lastSavedJson) return;
 
         this.lastSavedJson = stringified;
-        try {
-          localStorage.setItem(this.storageKey, stringified);
-        } catch (_) {}
-
-        try {
-          const event = new StorageEvent('storage', {
-            key: this.storageKey,
-            newValue: stringified,
-            storageArea: localStorage
-          });
-          (event as any).__sourceInstanceId = INSTANCE_ID;
-          window.dispatchEvent(event);
-
-          // Direct broadcast to preview iframes
-          const iframes = document.querySelectorAll('iframe');
-          iframes.forEach(iframe => {
-            try {
-              iframe.contentWindow?.dispatchEvent(event);
-              iframe.contentWindow?.postMessage({
-                type: 'STORAGE_SYNC',
-                key: this.storageKey,
-                newValue: stringified,
-                __sourceInstanceId: INSTANCE_ID
-              }, '*');
-            } catch (_) {}
-          });
-        } catch (_) {}
+        broadcastConfig(this.storageKey, stringified);
       });
     }
   }

@@ -1,6 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom, APP_INITIALIZER } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { AuthService } from './core/services/auth/auth.service';
+import { syncConfigsWithDatabase } from './core/services/page-configs/config-sync.util';
 
 export function initializeAuth(authService: AuthService) {
   return () => authService.fetchUser().catch(() => {});
@@ -110,6 +111,11 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: initializeAuth,
       deps: [AuthService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => syncConfigsWithDatabase(),
       multi: true
     },
     provideZoneChangeDetection({ eventCoalescing: true }), 
