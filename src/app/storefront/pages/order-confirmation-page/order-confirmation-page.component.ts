@@ -1,9 +1,11 @@
 import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, CheckCircle, Package, MessageCircle } from 'lucide-angular';
 import { StoreLayoutComponent } from '../../../shared/components/layout/store-layout/store-layout.component';
+
+import { OrderConfirmationPageConfigService } from '../../../core/services/page-configs/order-confirmation-page-config.service';
 
 @Component({
   selector: 'app-order-confirmation-page',
@@ -17,6 +19,9 @@ import { StoreLayoutComponent } from '../../../shared/components/layout/store-la
   templateUrl: './order-confirmation-page.component.html'
 })
 export class OrderConfirmationPageComponent implements OnInit {
+  private configService = inject(OrderConfirmationPageConfigService);
+  pageConfig = this.configService.pageConfig;
+
   lang = signal('en');
   show = signal(false);
   orderNumber = signal('');

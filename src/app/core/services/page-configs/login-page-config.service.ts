@@ -5,8 +5,39 @@ import { Injectable, signal, effect , NgZone, inject} from '@angular/core';
 
 
 
-const initialConfigValue: any = {};
+export interface LoginBenefit {
+  id: string;
+  title: string;
+  line1: string;
+  line2: string;
+}
 
+export interface LoginPageConfig {
+  heroTitlePrefix: string;
+  heroTitleHighlight: string;
+  heroSubtitle: string;
+  welcomeTitle: string;
+  welcomeSubtitle: string;
+  showSocialLogin: boolean;
+  benefits: LoginBenefit[];
+  heroImage: string;
+}
+
+const DEFAULT_CONFIG: LoginPageConfig = {
+  heroTitlePrefix: 'STOREFRONT.AUTO_STR_272',
+  heroTitleHighlight: 'STOREFRONT.AUTO_STR_271',
+  heroSubtitle: 'STOREFRONT.AUTO_STR_87',
+  welcomeTitle: 'AUTH.LOGIN',
+  welcomeSubtitle: 'STOREFRONT.AUTO_STR_480',
+  showSocialLogin: true,
+  heroImage: '',
+  benefits: [
+    { id: '1', title: 'STOREFRONT.AUTO_STR_275', line1: 'STOREFRONT.AUTO_STR_96', line2: 'STOREFRONT.AUTO_STR_228' },
+    { id: '2', title: 'STOREFRONT.AUTO_STR_274', line1: 'STOREFRONT.AUTO_STR_360', line2: 'STOREFRONT.AUTO_STR_254' },
+    { id: '3', title: 'STOREFRONT.AUTO_STR_273', line1: 'STOREFRONT.AUTO_STR_221', line2: 'STOREFRONT.AUTO_STR_258' },
+    { id: '4', title: 'STOREFRONT.AUTO_STR_271', line1: 'STOREFRONT.AUTO_STR_305', line2: 'STOREFRONT.AUTO_STR_140' },
+  ],
+};
 
 const INSTANCE_ID = typeof crypto !== 'undefined' && crypto.randomUUID 
   ? crypto.randomUUID() 
@@ -21,21 +52,21 @@ export class LoginPageConfigService {
   private isApplyingExternalUpdate = false;
   private lastSavedJson: string = '';
 
-  readonly pageConfig = signal<any>(this.loadInitialConfig());
+  readonly pageConfig = signal<LoginPageConfig>(this.loadInitialConfig());
 
   private zone = inject(NgZone);
 
   constructor() {
     this.lastSavedJson = JSON.stringify(this.pageConfig());
 
-    window.addEventListener('storage', (e: StorageEvent) => {
-      if ((e as any).__sourceInstanceId === INSTANCE_ID) return; // Discard self-triggered synthetic events
+    const applyExternalConfig = (key: string | null, newValue: string | null, sourceId?: string) => {
+      if (sourceId === INSTANCE_ID) return; // Discard self-triggered synthetic events
 
-      if (e.key === this.storageKey && e.newValue) {
-        if (e.newValue === this.lastSavedJson) return; // Discard echo / identical payload
+      if (key === this.storageKey && newValue) {
+        if (newValue === this.lastSavedJson) return; // Discard echo / identical payload
 
         try {
-          const updated = JSON.parse(e.newValue);
+          const updated = JSON.parse(newValue);
           const merged = this.mergeWithInitial(updated);
           const mergedJson = JSON.stringify(merged);
           if (mergedJson === this.lastSavedJson) return;
@@ -49,6 +80,16 @@ export class LoginPageConfigService {
             });
           });
         } catch (_) {}
+      }
+    };
+
+    window.addEventListener('storage', (e: StorageEvent) => {
+      applyExternalConfig(e.key, e.newValue, (e as any).__sourceInstanceId);
+    });
+
+    window.addEventListener('message', (e: MessageEvent) => {
+      if (e.data?.type === 'STORAGE_SYNC') {
+        applyExternalConfig(e.data.key, e.data.newValue, e.data.__sourceInstanceId);
       }
     });
 
@@ -70,6 +111,19 @@ export class LoginPageConfigService {
         });
         (event as any).__sourceInstanceId = INSTANCE_ID;
         window.dispatchEvent(event);
+
+        const iframes = document.querySelectorAll('iframe');
+        iframes.forEach(iframe => {
+          try {
+            iframe.contentWindow?.dispatchEvent(event);
+            iframe.contentWindow?.postMessage({
+              type: 'STORAGE_SYNC',
+              key: this.storageKey,
+              newValue: stringified,
+              __sourceInstanceId: INSTANCE_ID
+            }, '*');
+          } catch (_) {}
+        });
       } catch (_) {}
     });
   }
@@ -86,10 +140,10 @@ export class LoginPageConfigService {
         return this.mergeWithInitial(parsed);
       } catch (e) {}
     }
-    return initialConfigValue;
+    return DEFAULT_CONFIG;
   }
 
   private mergeWithInitial(parsed: any): any {
-    return sanitizeWithInitial(parsed, initialConfigValue);
+    return sanitizeWithInitial(parsed, DEFAULT_CONFIG);
   }
 }

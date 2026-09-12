@@ -67,8 +67,8 @@
     <ng-template #gridView>
       <section class="lk-policies-index" aria-labelledby="policies-title">
           <header class="lk-policies-index__heading">
-              <h1 id="policies-title">{{ 'POLICIES.TITLE' | translate }}</h1>
-              <p>{{ 'POLICIES.SUBTITLE' | translate }}</p>
+              <h1 id="policies-title">{{ config().title || ('POLICIES.TITLE' | translate) }}</h1>
+              <p>{{ config().subtitle || ('POLICIES.SUBTITLE' | translate) }}</p>
           </header>
 
           <div class="lk-policies-grid">

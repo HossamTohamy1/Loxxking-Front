@@ -67,7 +67,7 @@
       </div>
     </section>
 
-    <section class="lk-search-block" aria-labelledby="history-title">
+    <section class="lk-search-block" aria-labelledby="history-title" *ngIf="pageConfig().showRecentSearch">
       <div class="lk-search-block__heading">
         <h2 id="history-title">{{ pageConfig().recentSearchTitle | localize: pageConfig().recentSearchTitleAr : pageConfig().recentSearchTitleEn }}</h2>
         <button *ngIf="history().length > 0" type="button" class="lk-search-clear-history" (click)="clearHistory()">
@@ -193,7 +193,7 @@
       </div>
     </section>
 
-    <section class="lk-search-support">
+    <section class="lk-search-support" *ngIf="pageConfig().showSupportCard">
       <div>
         <lucide-icon [img]="Headphones" aria-hidden="true"></lucide-icon>
         <span>

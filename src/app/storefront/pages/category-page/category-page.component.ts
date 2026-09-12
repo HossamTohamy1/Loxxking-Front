@@ -31,6 +31,8 @@ async function fetchProductsFromBackend(slug: string) {
   return data;
 }
 
+import { CategoryPageConfigService } from '../../../core/services/page-configs/category-page-config.service';
+
 @Component({
   selector: 'app-category-page',
   standalone: true,
@@ -41,6 +43,8 @@ export class CategoryPageComponent implements OnInit {
   route = inject(ActivatedRoute);
   langService = inject<any>(LangService);
   private productRepo = inject(ProductRepositoryImpl);
+  private categoryConfigService = inject(CategoryPageConfigService);
+  pageConfig = this.categoryConfigService.pageConfig;
   
   readonly SlidersHorizontal = SlidersHorizontal;
   readonly ChevronDown = ChevronDown;

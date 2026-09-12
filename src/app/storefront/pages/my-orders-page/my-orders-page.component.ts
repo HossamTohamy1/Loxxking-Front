@@ -36,6 +36,8 @@ export interface TrackedOrder {
   items: TrackedOrderItem[];
 }
 
+import { MyOrdersPageConfigService } from '../../../core/services/page-configs/my-orders-page-config.service';
+
 @Component({
   selector: 'app-my-orders-page',
   standalone: true,
@@ -49,21 +51,10 @@ export interface TrackedOrder {
   templateUrl: './my-orders-page.component.html'
 })
 export class MyOrdersPageComponent implements OnInit {
-  config = {
-    emptyTitle: 'STOREFRONT.AUTO_STR_175',
-    emptyText: 'STOREFRONT.AUTO_STR_83',
-    emptyCta: 'STOREFRONT.AUTO_STR_415',
-    notFoundTitle: 'DASHBOARD.AUTO_STR_50',
-    notFoundText: 'STOREFRONT.AUTO_STR_37',
-    showSupportCard: true,
-    supportTitle: 'STOREFRONT.AUTO_STR_305',
-    supportText: 'STOREFRONT.AUTO_STR_186',
-    headerTitle: 'STOREFRONT.AUTO_STR_336',
-    headerSubtitle: 'STOREFRONT.AUTO_STR_120',
-    phonePlaceholder: 'CHECKOUT.PHONE',
-    orderPlaceholder: 'ORDERS.ORDER_NUMBER',
-    buttonText: 'STOREFRONT.AUTO_STR_397',
-  };
+  private myOrdersConfigService = inject(MyOrdersPageConfigService);
+  get config() {
+    return this.myOrdersConfigService.pageConfig();
+  }
 
   orders = signal<TrackedOrder[]>([]);
   phone = signal('');

@@ -195,8 +195,13 @@ export class HomePageEditorComponent implements OnInit, OnDestroy {
       this.localSections[sectionIndex] = { ...this.localSections[sectionIndex], ...updates };
     }
     
-    // 2. Push to debounced subject to update the iframe preview and backend
-    this.sectionUpdateSubject.next(this.localSections);
+    // 2. If it's a toggle change (enabled flag), update immediately without debounce delay
+    if ('enabled' in updates) {
+      this.configService.updateConfig({ ...this.config(), sections: [...this.localSections] });
+    } else {
+      // Push to debounced subject for text inputs
+      this.sectionUpdateSubject.next(this.localSections);
+    }
 
     if (this.editingSection && this.editingSection.id === id) {
       Object.assign(this.editingSection, updates);

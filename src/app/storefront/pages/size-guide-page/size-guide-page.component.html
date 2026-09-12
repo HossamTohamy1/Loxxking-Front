@@ -2,11 +2,11 @@
 
     <div class="lk-size-guide-page">
         <section class="lk-size-guide-hero" aria-labelledby="size-guide-title">
-            <img class="lk-size-guide-hero__model" src="assets/size-guide/hero-model.png" alt='STOREFRONT.AUTO_STR_85' />
+            <img class="lk-size-guide-hero__model" [src]="pageConfig().heroImage || 'assets/size-guide/hero-model.png'" alt='STOREFRONT.AUTO_STR_85' />
 
             <div class="lk-size-guide-hero__content">
-                <h1 id="size-guide-title">{{ 'PRODUCT.SIZE_GUIDE' | translate }}</h1>
-                <p>{{ 'STOREFRONT.AUTO_STR_98' | translate }}</p>
+                <h1 id="size-guide-title">{{ pageConfig().pageTitle || ('PRODUCT.SIZE_GUIDE' | translate) }}</h1>
+                <p>{{ pageConfig().pageSubtitle || ('STOREFRONT.AUTO_STR_98' | translate) }}</p>
                 <i aria-hidden="true"></i>
             </div>
 
@@ -77,7 +77,7 @@
             </div>
         </section>
 
-        <section class="lk-size-guide-chart" aria-labelledby="chart-title">
+        <section *ngIf="pageConfig().showMeasurementsTable" class="lk-size-guide-chart" aria-labelledby="chart-title">
             <div class="lk-size-guide-section-title" aria-label='STOREFRONT.AUTO_STR_319'>
                 <span aria-hidden="true"></span>
                 <h2>{{ 'STOREFRONT.AUTO_STR_319' | translate }}</h2>
@@ -183,7 +183,7 @@
             </div>
         </section>
 
-        <section class="lk-size-guide-help" aria-label='STOREFRONT.AUTO_STR_124'>
+        <section *ngIf="pageConfig().showHelpSection" class="lk-size-guide-help" aria-label='STOREFRONT.AUTO_STR_124'>
             <div class="lk-size-guide-help__team">
                 <img src="assets/size-guide/support-team.png" alt='STOREFRONT.AUTO_STR_203' />
                 <div>

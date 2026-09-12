@@ -118,16 +118,16 @@ export class HomePageConfigService {
       this.fetchFromBackend();
 
       // 2. Cross-tab/frame synchronization with echo prevention
-      window.addEventListener('storage', (e: StorageEvent) => {
-        if ((e as any).__sourceInstanceId === INSTANCE_ID) {
+      const applyExternalConfig = (key: string | null, newValue: string | null, sourceId?: string) => {
+        if (sourceId === INSTANCE_ID) {
           return; // Discard self-triggered synthetic events
         }
 
-        if (e.key === this.storageKey && e.newValue) {
-          if (e.newValue === this.lastSavedJson) return; // Discard echo / identical payload
+        if (key === this.storageKey && newValue) {
+          if (newValue === this.lastSavedJson) return; // Discard echo / identical payload
 
           try {
-            const updated = JSON.parse(e.newValue);
+            const updated = JSON.parse(newValue);
             const merged = this.mergeWithInitial(updated);
             const mergedJson = JSON.stringify(merged);
             if (mergedJson === this.lastSavedJson) return;
@@ -141,6 +141,16 @@ export class HomePageConfigService {
               });
             });
           } catch (_) {}
+        }
+      };
+
+      window.addEventListener('storage', (e: StorageEvent) => {
+        applyExternalConfig(e.key, e.newValue, (e as any).__sourceInstanceId);
+      });
+
+      window.addEventListener('message', (e: MessageEvent) => {
+        if (e.data?.type === 'STORAGE_SYNC') {
+          applyExternalConfig(e.data.key, e.data.newValue, e.data.__sourceInstanceId);
         }
       });
 
@@ -165,16 +175,26 @@ export class HomePageConfigService {
           });
           (event as any).__sourceInstanceId = INSTANCE_ID;
           window.dispatchEvent(event);
+
+          // Direct broadcast to preview iframes
+          const iframes = document.querySelectorAll('iframe');
+          iframes.forEach(iframe => {
+            try {
+              iframe.contentWindow?.dispatchEvent(event);
+              iframe.contentWindow?.postMessage({
+                type: 'STORAGE_SYNC',
+                key: this.storageKey,
+                newValue: stringified,
+                __sourceInstanceId: INSTANCE_ID
+              }, '*');
+            } catch (_) {}
+          });
         } catch (_) {}
       });
     }
   }
 
   updateConfig(newConfig: PageConfig) {
-    const stringified = JSON.stringify(newConfig);
-    if (stringified === this.lastSavedJson) return;
-
-    this.lastSavedJson = stringified;
     // 1. Optimistic local update
     this.zone.run(() => { this.pageConfig.set(newConfig); });
 

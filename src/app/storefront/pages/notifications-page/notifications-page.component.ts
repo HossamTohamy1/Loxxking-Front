@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 import { StoreLayoutComponent } from '../../../shared/components/layout/store-layout/store-layout.component';
 import { LucideAngularModule, Bell, Package, Tag, MessageCircle, Info, CheckCheck } from 'lucide-angular';
-import { NotificationsPageConfigService } from '../../../core/services/config/notifications-page-config.service';
+import { NotificationsPageConfigService } from '../../../core/services/page-configs/notifications-page-config.service';
 import { LangService } from '../../../core/services/lang/lang.service';
 import { NotificationService } from '../../../core/services/notification/notification.service';
 import { notifications as initialNotifs, Notification } from '../../../shared/data/mockData';

@@ -1,10 +1,11 @@
 import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LucideAngularModule, BadgeCheck, PackageCheck, ShieldCheck, Truck } from 'lucide-angular';
 import { StoreLayoutComponent } from '../../../shared/components/layout/store-layout/store-layout.component';
 import { HomeHeaderComponent } from '../../../shared/components/layout/home-header/home-header.component';
+import { SizeGuidePageConfigService } from '../../../core/services/page-configs/size-guide-page-config.service';
 
 @Component({
   selector: 'app-size-guide-page',
@@ -20,6 +21,8 @@ import { HomeHeaderComponent } from '../../../shared/components/layout/home-head
   styleUrl: './size-guide-page.component.css'
 })
 export class SizeGuidePageComponent {
+  private configService = inject(SizeGuidePageConfigService);
+  pageConfig = this.configService.pageConfig;
   readonly sizeRows = [
     { size: 'XS', numeric: '32 - 34', waist: '60 - 66', belly: '70 - 76' },
     { size: 'S', numeric: '36 - 38', waist: '67 - 73', belly: '77 - 83' },

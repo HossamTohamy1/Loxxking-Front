@@ -84,7 +84,7 @@ export class ContactPageComponent {
   contactWhatsappBanner = 'assets/contact/contact-whatsapp-banner.png';
 
   get contactMethods() {
-    return this.config().contactMethods.map((m: any) => ({
+    return (this.config.contactMethods || []).map((m: any) => ({
       ...m,
       icon: m.type === 'phone' ? 'assets/contact/contact-phone.png' 
         : m.type === 'whatsapp' ? 'assets/contact/contact-whatsapp.png' 

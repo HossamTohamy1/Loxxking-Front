@@ -28,6 +28,8 @@ const DEFAULT_CONFIG: LoginPageConfig = {
   ],
 };
 
+import { LoginPageConfigService } from '../../../core/services/page-configs/login-page-config.service';
+
 @Component({
   selector: 'app-login-page',
   standalone: true,
@@ -39,8 +41,9 @@ export class LoginPageComponent implements OnInit {
   private router = inject(Router);
   private http = inject(HttpClient);
   private authService = inject(AuthService);
+  private configService = inject(LoginPageConfigService);
 
-  pageConfig = signal<LoginPageConfig>(DEFAULT_CONFIG);
+  pageConfig = this.configService.pageConfig;
   readonly ArrowLeft = ArrowLeft; readonly Eye = Eye; readonly EyeOff = EyeOff; readonly Heart = Heart; readonly Lock = Lock; readonly Mail = Mail; readonly ShieldCheck = ShieldCheck;
   logoImage = 'assets/login/loxx-login-logo.png';
   sceneImage = 'assets/login/loxx-login-scene.png';
@@ -55,16 +58,6 @@ export class LoginPageComponent implements OnInit {
   ngOnInit() {
     const rememberedEmail = window.localStorage.getItem('loxx-remembered-email');
     if (rememberedEmail) { this.form.email = rememberedEmail; this.form.remember = true; }
-    const saved = localStorage.getItem('loxx-login-config');
-    if (saved) {
-      try {
-        const clean = sanitizeWithInitial(JSON.parse(saved), DEFAULT_CONFIG);
-        this.pageConfig.set(clean);
-        localStorage.setItem('loxx-login-config', JSON.stringify(clean));
-      } catch (e) {
-        console.error('Failed to parse login config', e);
-      }
-    }
   }
 
   togglePassword() { this.showPassword.update(v => !v); }

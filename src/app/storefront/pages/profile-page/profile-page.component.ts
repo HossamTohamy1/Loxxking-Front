@@ -1,5 +1,6 @@
 import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
-import { Component, signal, computed, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, signal, computed, ElementRef, ViewChild, OnInit, inject } from '@angular/core';
+import { ProfilePageConfigService } from '../../../core/services/page-configs/profile-page-config.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StoreLayoutComponent } from '../../../shared/components/layout/store-layout/store-layout.component';
@@ -234,7 +235,8 @@ export class ProfilePageComponent implements OnInit {
 
   countryOptions = countryOptions;
   
-  config = signal<ProfilePageConfig>(DEFAULT_CONFIG);
+  private profileConfigService = inject(ProfilePageConfigService);
+  config = this.profileConfigService.pageConfig;
   profile = signal<CustomerProfileDetails>(readProfileDetails());
   isSaving = signal(false);
   isImageLoading = signal(false);
@@ -247,29 +249,7 @@ export class ProfilePageComponent implements OnInit {
     return words.slice(0, 2).map(word => word.charAt(0)).join('') || 'ح';
   });
 
-  ngOnInit() {
-    try {
-      const saved = localStorage.getItem('loxx-profile-config');
-      if (saved) {
-        const clean = sanitizeWithInitial(JSON.parse(saved), DEFAULT_CONFIG);
-        this.config.set(clean);
-        localStorage.setItem('loxx-profile-config', JSON.stringify(clean));
-      }
-    } catch {
-        // ignore
-    }
-
-    const handleStorage = (e: StorageEvent) => {
-        if (e.key === 'loxx-profile-config' && e.newValue) {
-            try {
-                this.config.set(sanitizeWithInitial(JSON.parse(e.newValue), DEFAULT_CONFIG));
-            } catch {
-                // ignore
-            }
-        }
-    };
-    window.addEventListener('storage', handleStorage);
-  }
+  ngOnInit() {}
 
   updateField(field: keyof CustomerProfileDetails, value: string): void {
     this.savedSuccessfully.set(false);

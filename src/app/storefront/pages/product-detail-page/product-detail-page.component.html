@@ -165,7 +165,7 @@
             </div>
         </section>
 
-        <section *ngIf="pageConfig().showFeaturesSection" id="lk-features" class="lk-product-features-section">
+        <section *ngIf="pageConfig().showTabs !== false && pageConfig().showFeaturesSection" id="lk-features" class="lk-product-features-section">
             <h2>{{ pageConfig().tabFeaturesText | localize: pageConfig().tabFeaturesTextAr : pageConfig().tabFeaturesTextEn }}</h2>
             <div class="lk-product-features-grid">
                 <article *ngFor="let feat of pageConfig().features">
@@ -178,7 +178,7 @@
             </div>
         </section>
 
-        <app-product-reviews *ngIf="pageConfig().showReviewsSection" [productId]="product!.id"></app-product-reviews>
+        <app-product-reviews *ngIf="pageConfig().showTabs !== false && pageConfig().showReviewsSection" [productId]="product!.id"></app-product-reviews>
 
         <section *ngIf="pageConfig().showPurchaseActions" id="lk-purchase" class="lk-product-purchase-section" aria-label='STOREFRONT.AUTO_STR_191'>
             <div class="lk-product-purchase-actions">

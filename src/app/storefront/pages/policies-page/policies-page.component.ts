@@ -200,6 +200,13 @@ const policies: PolicyDefinition[] = [
     },
 ];
 
+import { PoliciesPageConfigService } from '../../../core/services/page-configs/policies-page-config.service';
+import { inject, signal, computed } from '@angular/core';
+
+const ICON_MAP: Record<string, any> = {
+  ShieldCheck, UserRound, FileText, LockKeyhole, UsersRound, BadgeCheck, Truck, Clock3, CreditCard, MapPin, Info, PackageOpen, CalendarDays, RefreshCcw, FileCheck2, Monitor, Landmark, Tags, CircleAlert, PencilLine, ChevronLeft, ShoppingCart
+};
+
 @Component({
   selector: 'app-policies-page',
   standalone: true,
@@ -207,13 +214,52 @@ const policies: PolicyDefinition[] = [
   templateUrl: './policies-page.component.html'
 })
 export class PoliciesPageComponent implements OnInit {
-  policies = policies;
-  selectedPolicy: PolicyDefinition | null = null;
-  cartCount: number = 0; // Mocked cart count as we don't have AppContext
-  logoHeader = 'assets/home/logo-header.png'; // Assuming asset path
+  private configService = inject(PoliciesPageConfigService);
+  config = this.configService.pageConfig;
+
+  currentView = signal<string | null>(null);
+  cartCount: number = 0;
+  logoHeader = 'assets/home/logo-header.png';
 
   readonly ChevronLeft = ChevronLeft;
   readonly ShoppingCart = ShoppingCart;
+
+  getIcon(iconName: any): any {
+    if (typeof iconName === 'string') {
+      return ICON_MAP[iconName] || FileText;
+    }
+    return iconName || FileText;
+  }
+
+  resolvedPolicies = computed(() => {
+    const raw = this.config()?.policies;
+    if (raw && raw.length > 0) {
+      return raw.map((p: any) => ({
+        ...p,
+        icon: this.getIcon(p.icon),
+        heroIcon: this.getIcon(p.heroIcon || p.icon),
+        sections: (p.sections || []).map((s: any) => ({
+          ...s,
+          icon: this.getIcon(s.icon)
+        }))
+      }));
+    }
+    return policies;
+  });
+
+  get policies(): any[] {
+    return this.resolvedPolicies();
+  }
+
+  selectedPolicyComputed = computed(() => {
+    const requested = this.currentView();
+    if (!requested) return null;
+    return this.resolvedPolicies().find(p => p.key === requested) || null;
+  });
+
+  get selectedPolicy(): any {
+    return this.selectedPolicyComputed();
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -223,14 +269,12 @@ export class PoliciesPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      const requestedPolicy = params['view'];
-      this.selectedPolicy = requestedPolicy 
-        ? this.policies.find(p => p.key === requestedPolicy) || null 
-        : null;
+      this.currentView.set(params['view'] || null);
     });
   }
 
   selectPolicy(key: string): void {
+    this.currentView.set(key);
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { view: key },
@@ -242,6 +286,7 @@ export class PoliciesPageComponent implements OnInit {
 
   goBack(): void {
     if (this.selectedPolicy) {
+      this.currentView.set(null);
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {}

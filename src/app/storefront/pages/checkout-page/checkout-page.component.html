@@ -33,7 +33,7 @@
     <ng-template #checkoutContent>
       <div class="lk-checkout-layout">
         <form class="lk-checkout-form-card" (ngSubmit)="handleSubmit()">
-          <section class="lk-checkout-section">
+          <section class="lk-checkout-section" *ngIf="config().showCustomerInfo !== false">
             <div class="lk-checkout-section__heading">
               <span class="lk-checkout-step">1</span>
               <h2>{{ config().customerInfoTitle | localize: config().customerInfoTitleAr : config().customerInfoTitleEn }}</h2>
@@ -125,7 +125,7 @@
             </label>
           </section>
 
-          <section class="lk-checkout-section lk-checkout-payment">
+          <section class="lk-checkout-section lk-checkout-payment" *ngIf="config().showPaymentInfo !== false">
             <div class="lk-checkout-section__heading">
               <span class="lk-checkout-step">2</span>
               <h2>{{ config().paymentInfoTitle | localize: config().paymentInfoTitleAr : config().paymentInfoTitleEn }}</h2>
@@ -282,7 +282,7 @@
         </form>
 
         <aside class="lk-checkout-sidebar">
-          <section class="lk-checkout-summary-card">
+          <section class="lk-checkout-summary-card" *ngIf="config().showOrderSummary !== false">
             <div class="lk-checkout-summary-card__heading">
               <lucide-icon name="lock-keyhole" aria-hidden="true"></lucide-icon>
               <div>
