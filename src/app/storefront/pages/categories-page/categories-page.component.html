@@ -13,7 +13,7 @@
       <span aria-hidden="true"></span>
     </header>
 
-    <section class="lk-categories-grid" aria-label='STOREFRONT.AUTO_STR_224'>
+    <section class="lk-categories-grid" *ngIf="pageConfig().showCategories !== false" aria-label='STOREFRONT.AUTO_STR_224'>
       <a *ngFor="let category of getStoreCategories(); let i = index"
          [routerLink]="category.path"
          class="lk-category-showcase-card"

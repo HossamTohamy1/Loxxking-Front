@@ -68,7 +68,7 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
                 (valueChange)="updateBilingualField('addAllToCartText', $event.lang, $event.value)"></app-bilingual-input>
         </app-section-card>
 
-        <app-section-card title="بطاقة المنتج" [index]="1" [enabled]="true" [isFirst]="false" [isLast]="false">
+        <app-section-card title="بطاقة المنتج" [index]="1" [showToggle]="false" [isFirst]="false" [isLast]="false">
             <label class="flex items-center justify-between p-2 bg-gray-50 rounded-md border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors mb-2">
                 <span class="text-sm text-gray-700">{{ 'DASHBOARD.AUTO_STR_327' | translate }}</span>
                 <div class="relative inline-flex items-center">
@@ -121,7 +121,7 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
             </label>
         </app-section-card>
 
-        <app-section-card title="حالة المفضلة الفارغة" [index]="2" [enabled]="true" [isFirst]="false" [isLast]="false">
+        <app-section-card title="حالة المفضلة الفارغة" [index]="2" [enabled]="config().showEmptyState !== false" (toggle)="updateConfig({showEmptyState: $event})" [isFirst]="false" [isLast]="false">
             <label class="flex items-center justify-between p-2 bg-gray-50 rounded-md border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors mb-2">
                 <span class="text-sm text-gray-700">إظهار الرسم التوضيحي (Illustration)</span>
                 <div class="relative inline-flex items-center">

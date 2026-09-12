@@ -9,7 +9,7 @@
   
 
   <main class="lk-checkout-page">
-    <section class="lk-checkout-page__hero">
+    <section class="lk-checkout-page__hero" *ngIf="config().showHeader !== false">
       <div class="lk-checkout-page__title-wrap">
         <h1>{{ config().headerTitle | localize: config().headerTitleAr : config().headerTitleEn }}</h1>
         <p>{{ config().headerSubtitle | localize: config().headerSubtitleAr : config().headerSubtitleEn }}</p>
@@ -20,7 +20,7 @@
     </section>
 
     <ng-container *ngIf="displayItems().length === 0; else checkoutContent">
-      <section class="lk-checkout-empty" aria-label='CART.EMPTY'>
+      <section class="lk-checkout-empty" *ngIf="config().showEmptyState !== false" aria-label='CART.EMPTY'>
         <div class="lk-checkout-empty__icon" aria-hidden="true">
           <lucide-icon name="package-check"></lucide-icon>
         </div>

@@ -43,6 +43,7 @@ export interface FavoritesPageConfig {
     showRemoveAction: boolean;
     showMoveToCartAction: boolean;
     
+    showEmptyState: boolean;
     emptyStateTitle: string;
     emptyStateTitleAr?: string;
     emptyStateTitleEn?: string;
@@ -85,6 +86,7 @@ const initialConfig: FavoritesPageConfig = {
     showRemoveAction: true,
     showMoveToCartAction: true,
     
+    showEmptyState: true,
     emptyStateTitle: 'قائمة المفضلة فارغة',
     emptyStateTitleAr: 'قائمة المفضلة فارغة',
     emptyStateTitleEn: 'Your favorites list is empty',

@@ -28,6 +28,7 @@ export interface CategoriesPageConfig {
     headerSubtitle: string;
     headerSubtitleAr?: string;
     headerSubtitleEn?: string;
+    showCategories: boolean;
     categories: CategoryCardConfig[];
 }
 
@@ -36,6 +37,7 @@ const initialConfig: CategoriesPageConfig = {
     showTitle: true,
     headerTitle: 'التصنيفات',
     headerSubtitle: 'تصفح جميع المنتجات حسب الفئة',
+    showCategories: true,
     categories: [
         { id: 'men', title: 'مشدات', accent: 'رجالية', description: 'دعم مثالي وثقة\nطوال اليوم', path: '/all-shapers?type=men' },
         { id: 'women', title: 'مشدات', accent: 'نسائية', description: 'تصاميم أنثوية\nلإطلالة مثالية', path: '/all-shapers?type=women' },

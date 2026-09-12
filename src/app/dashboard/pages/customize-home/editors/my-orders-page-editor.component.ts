@@ -17,7 +17,7 @@ import { LucideAngularModule } from 'lucide-angular';
             <p class="text-sm text-gray-500">{{ 'DASHBOARD.AUTO_STR_59' | translate }}</p>
         </div>
 
-        <app-section-card title="رأس الصفحة وحقول البحث" [index]="0" [enabled]="true" [isFirst]="true" [isLast]="false">
+        <app-section-card title="رأس الصفحة وحقول البحث" [index]="0" [enabled]="config().showHeader !== false" [isFirst]="true" [isLast]="false" (toggle)="updateConfig({showHeader: $event})">
             <div class="flex flex-col gap-1.5 mb-3">
                 <span class="text-xs font-bold text-gray-700">{{ 'DASHBOARD.AUTO_STR_178' | translate }}</span>
                 <input type="text" class="w-full text-sm bg-gray-50 border border-gray-200 rounded-md px-3 py-2 outline-none focus:border-blue-500" [ngModel]="config().headerTitle" (ngModelChange)="updateConfig({headerTitle: $event})" />
@@ -41,7 +41,7 @@ import { LucideAngularModule } from 'lucide-angular';
             </div>
         </app-section-card>
 
-        <app-section-card title="الحالات الفارغة" [index]="1" [enabled]="true" [isFirst]="false" [isLast]="false">
+        <app-section-card title="الحالات الفارغة" [index]="1" [enabled]="config().showEmptyState !== false" [isFirst]="false" [isLast]="false" (toggle)="updateConfig({showEmptyState: $event})">
             <div class="mb-2 font-bold text-sm text-gray-800">حالة: لا توجد طلبات</div>
             <div class="flex flex-col gap-1.5 mb-3">
                 <span class="text-xs font-bold text-gray-700">{{ 'COMMON.ADDRESS' | translate }}</span>

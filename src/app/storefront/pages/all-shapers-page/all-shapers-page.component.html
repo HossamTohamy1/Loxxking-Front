@@ -1,6 +1,6 @@
 <app-store-layout [showFloatingChat]="false">
   <main class="lk-all-shapers-page">
-    <header class="lk-all-shapers-title">
+    <header class="lk-all-shapers-title" *ngIf="pageConfig().showHeader !== false">
       <h1>{{ pageConfig().headerTitle | localize: pageConfig().headerTitleAr : pageConfig().headerTitleEn }}{{ selectedType() !== 'all' ? ' - ' + (getTypeLabel(selectedType()) | translate) : '' }}</h1>
     </header>
 
@@ -134,7 +134,7 @@
     </ng-container>
 
     <ng-template #emptyState>
-      <section class="lk-all-shapers-empty">
+      <section class="lk-all-shapers-empty" *ngIf="pageConfig().showEmptyState !== false">
         <h2>{{ pageConfig().emptyTitle | localize: pageConfig().emptyTitleAr : pageConfig().emptyTitleEn }}</h2>
         <p>{{ pageConfig().emptyText | localize: pageConfig().emptyTextAr : pageConfig().emptyTextEn }}</p>
         <button type="button" (click)="resetFilters()">{{ pageConfig().emptyCta | localize: pageConfig().emptyCtaAr : pageConfig().emptyCtaEn }}</button>

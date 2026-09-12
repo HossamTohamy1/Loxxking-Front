@@ -1,7 +1,7 @@
 <app-store-layout [showFloatingChat]="false">
   <main class="lk-order-track-page">
     <section class="lk-order-track-shell">
-      <header class="lk-order-track-hero">
+      <header class="lk-order-track-hero" *ngIf="config.showHeader !== false">
         <h1>{{ config.headerTitle | translate}}</h1>
         <p>{{ config.headerSubtitle | translate}}</p>
       </header>
@@ -24,7 +24,7 @@
         <button type="submit" class="lk-order-track-button">{{ config.buttonText | translate }}</button>
       </form>
 
-      @if (showEmptyState()) {
+      @if (config.showEmptyState !== false && showEmptyState()) {
         <section class="lk-order-track-empty" aria-label='STOREFRONT.AUTO_STR_175'>
           <div class="lk-order-track-empty__icon" aria-hidden="true">
             <lucide-icon name="package-search"></lucide-icon>

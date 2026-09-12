@@ -7,7 +7,8 @@
     <app-section-card 
         title="رأس الصفحة" 
         [index]="0" 
-        [enabled]="true" 
+        [enabled]="config().showTitle !== false" 
+        (toggle)="updateConfig({showTitle: $event})"
         [isFirst]="true" 
         [isLast]="false">
         
@@ -24,7 +25,8 @@
     <app-section-card 
         title="قائمة السياسات" 
         [index]="1" 
-        [enabled]="true" 
+        [enabled]="config().showPoliciesGrid !== false" 
+        (toggle)="updateConfig({showPoliciesGrid: $event})"
         [isFirst]="false" 
         [isLast]="true" 
         [addAction]="{ label: 'إضافة سياسة', onClick: addPolicy }">

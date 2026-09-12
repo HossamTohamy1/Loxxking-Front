@@ -19,7 +19,7 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
             <p class="text-sm text-gray-500">{{ 'DASHBOARD.AUTO_STR_35' | translate }}</p>
         </div>
 
-        <app-section-card title="رأس الصفحة والبحث" [index]="0" [enabled]="true" [isFirst]="true" [isLast]="false">
+        <app-section-card title="رأس الصفحة والبحث" [index]="0" [enabled]="config().showIntro !== false" (toggle)="updateConfig({showIntro: $event})" [isFirst]="true" [isLast]="false">
             <app-bilingual-input title="DASHBOARD.AUTO_STR_178" labelAr="عربي / AR" labelEn="English / EN" 
                 [valueAr]="$any(config())['titleAr'] || ''" 
                 [valueEn]="$any(config())['titleEn'] || ''" 
@@ -41,7 +41,7 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
                 (valueChange)="updateBilingualField('searchPlaceholder', $event.lang, $event.value)"></app-bilingual-input>
         </app-section-card>
 
-        <app-section-card title="قائمة الأسئلة" [index]="1" [enabled]="true" [isFirst]="false" [isLast]="false" [addAction]="{ label: 'إضافة سؤال', onClick: addFaq }">
+        <app-section-card title="قائمة الأسئلة" [index]="1" [enabled]="config().showFaqList !== false" (toggle)="updateConfig({showFaqList: $event})" [isFirst]="false" [isLast]="false" [addAction]="{ label: 'إضافة سؤال', onClick: addFaq }">
             <div class="flex flex-col gap-3">
                 <div *ngFor="let faq of config().faqs; let idx = index; trackBy: trackByFaqId" class="flex gap-2 bg-gray-50 border border-gray-200 rounded-lg p-3">
                     <div class="flex flex-col gap-2 flex-1">

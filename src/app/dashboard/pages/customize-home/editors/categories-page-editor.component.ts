@@ -48,10 +48,10 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
         <app-section-card 
             title="التصنيفات" 
             [index]="1" 
-            [enabled]="true" 
+            [enabled]="config().showCategories !== false" 
             [isFirst]="false" 
             [isLast]="true"
-            (toggle)="noop()"
+            (toggle)="updateConfig({showCategories: $event})"
             (duplicate)="noop()"
             (delete)="noop()"
             (moveUp)="noop()"

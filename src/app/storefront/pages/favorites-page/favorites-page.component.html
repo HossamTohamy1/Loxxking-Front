@@ -106,26 +106,28 @@
       </section>
     } @else {
       <!-- Empty State -->
-      <section class="lk-favorites-empty" aria-label='STOREFRONT.AUTO_STR_165'>
-        @if (pageConfig().showEmptyStateIllustration) {
-          <div class="lk-favorites-empty__illustration" aria-hidden="true">
-            <lucide-icon [img]="Heart"></lucide-icon>
-            <i class="is-one"></i>
-            <i class="is-two"></i>
-            <i class="is-three"></i>
-            <i class="is-four"></i>
-          </div>
-        }
+      @if (pageConfig().showEmptyState !== false) {
+        <section class="lk-favorites-empty" aria-label='STOREFRONT.AUTO_STR_165'>
+          @if (pageConfig().showEmptyStateIllustration) {
+            <div class="lk-favorites-empty__illustration" aria-hidden="true">
+              <lucide-icon [img]="Heart"></lucide-icon>
+              <i class="is-one"></i>
+              <i class="is-two"></i>
+              <i class="is-three"></i>
+              <i class="is-four"></i>
+            </div>
+          }
 
-        <div class="lk-favorites-empty__copy">
-          <h2>{{ pageConfig().emptyStateTitle | localize: pageConfig().emptyStateTitleAr : pageConfig().emptyStateTitleEn }}</h2>
-          <p>{{ pageConfig().emptyStateSubtitle | localize: pageConfig().emptyStateSubtitleAr : pageConfig().emptyStateSubtitleEn }}</p>
-          <a routerLink="/all-shapers">
-            <span>{{ pageConfig().emptyStateButtonText | localize: pageConfig().emptyStateButtonTextAr : pageConfig().emptyStateButtonTextEn }}</span>
-            <lucide-icon [img]="ChevronRight" class="rtl-flip" aria-hidden="true"></lucide-icon>
-          </a>
-        </div>
-      </section>
+          <div class="lk-favorites-empty__copy">
+            <h2>{{ pageConfig().emptyStateTitle | localize: pageConfig().emptyStateTitleAr : pageConfig().emptyStateTitleEn }}</h2>
+            <p>{{ pageConfig().emptyStateSubtitle | localize: pageConfig().emptyStateSubtitleAr : pageConfig().emptyStateSubtitleEn }}</p>
+            <a routerLink="/all-shapers">
+              <span>{{ pageConfig().emptyStateButtonText | localize: pageConfig().emptyStateButtonTextAr : pageConfig().emptyStateButtonTextEn }}</span>
+              <lucide-icon [img]="ChevronRight" class="rtl-flip" aria-hidden="true"></lucide-icon>
+            </a>
+          </div>
+        </section>
+      }
     }
 
     @if (pageConfig().showTrustBadges) {

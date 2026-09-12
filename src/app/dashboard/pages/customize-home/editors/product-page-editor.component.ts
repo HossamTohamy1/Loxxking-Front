@@ -21,7 +21,7 @@ import { PreviewScrollService } from '../../../../core/services/page-configs/pre
         <p class="text-sm text-gray-500">{{ 'DASHBOARD.AUTO_STR_12' | translate }}</p>
       </div>
 
-      <app-section-card (click)="onCardClick(0)" (focusin)="onCardClick(0)" title="الرأس ومعلومات المنتج" [index]="0" [enabled]="true" [isFirst]="true" [isLast]="false" (toggle)="noop()" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+      <app-section-card (click)="onCardClick(0)" (focusin)="onCardClick(0)" title="الرأس ومعلومات المنتج" [index]="0" [showToggle]="false" [isFirst]="true" [isLast]="false" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
         <ng-container *ngTemplateOutlet="checkboxTemplate; context: { label: 'إظهار مسار التنقل (Breadcrumb)', field: 'showBreadcrumb' }"></ng-container>
         <ng-container *ngTemplateOutlet="checkboxTemplate; context: { label: 'إظهار علامة الأكثر مبيعاً', field: 'showBestSellerBadge' }"></ng-container>
         <app-bilingual-input title="نص علامة الأكثر مبيعاً" labelAr="عربي / AR" labelEn="English / EN" 
@@ -31,7 +31,7 @@ import { PreviewScrollService } from '../../../../core/services/page-configs/pre
         <ng-container *ngTemplateOutlet="checkboxTemplate; context: { label: 'إظهار سطر التقييم', field: 'showRatingLine' }"></ng-container>
       </app-section-card>
 
-      <app-section-card (click)="onCardClick(1)" (focusin)="onCardClick(1)" title="خيارات الشراء" [index]="1" [enabled]="true" [isFirst]="false" [isLast]="false" (toggle)="noop()" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+      <app-section-card (click)="onCardClick(1)" (focusin)="onCardClick(1)" title="خيارات الشراء" [index]="1" [showToggle]="false" [isFirst]="false" [isLast]="false" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
         <ng-container *ngTemplateOutlet="checkboxTemplate; context: { label: 'إظهار خيارات الألوان', field: 'showColorOptions' }"></ng-container>
         <app-bilingual-input title="تسمية اللون" labelAr="عربي / AR" labelEn="English / EN" 
                 [valueAr]="$any(config())['colorLabelAr'] || ''" 

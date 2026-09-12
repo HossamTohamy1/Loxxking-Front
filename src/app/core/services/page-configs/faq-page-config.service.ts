@@ -16,6 +16,7 @@ export interface FaqItemConfig {
 }
 
 export interface FaqPageConfig {
+  showIntro?: boolean;
   title: string;
   titleAr?: string;
   titleEn?: string;
@@ -26,6 +27,7 @@ export interface FaqPageConfig {
   searchPlaceholderAr?: string;
   searchPlaceholderEn?: string;
   showSearch: boolean;
+  showFaqList?: boolean;
   showSupportCard: boolean;
   supportCardTitle: string;
   supportCardTitleAr?: string;
@@ -37,6 +39,7 @@ export interface FaqPageConfig {
 }
 
 const initialConfig: FaqPageConfig = {
+  showIntro: true,
   title: 'الأسئلة الشائعة',
   titleAr: 'الأسئلة الشائعة',
   titleEn: 'Frequently Asked Questions',
@@ -47,6 +50,7 @@ const initialConfig: FaqPageConfig = {
   searchPlaceholderAr: 'ابحث في الأسئلة',
   searchPlaceholderEn: 'Search questions...',
   showSearch: true,
+  showFaqList: true,
   showSupportCard: true,
   supportCardTitle: 'لم تجد ما تبحث عنه؟',
   supportCardTitleAr: 'لم تجد ما تبحث عنه؟',

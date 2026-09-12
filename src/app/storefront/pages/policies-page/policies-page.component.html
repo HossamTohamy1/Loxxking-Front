@@ -66,12 +66,12 @@
 
     <ng-template #gridView>
       <section class="lk-policies-index" aria-labelledby="policies-title">
-          <header class="lk-policies-index__heading">
+          <header class="lk-policies-index__heading" *ngIf="config().showTitle !== false">
               <h1 id="policies-title">{{ config().title || ('POLICIES.TITLE' | translate) }}</h1>
               <p>{{ config().subtitle || ('POLICIES.SUBTITLE' | translate) }}</p>
           </header>
 
-          <div class="lk-policies-grid">
+          <div class="lk-policies-grid" *ngIf="config().showPoliciesGrid !== false">
               <button type="button" class="lk-policy-grid-card" *ngFor="let policy of policies" (click)="selectPolicy(policy.key)">
                   <span class="lk-policy-grid-card__icon" aria-hidden="true">
                       <lucide-icon [img]="policy.icon"></lucide-icon>

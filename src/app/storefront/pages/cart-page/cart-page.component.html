@@ -1,27 +1,31 @@
 <app-store-layout [showFloatingChat]="false">
 
   <main class="lk-cart-page">
-    <section class="lk-cart-heading">
-      <div>
-        <h1>{{ config().headerTitle | localize: config().headerTitleAr : config().headerTitleEn }}</h1>
-        <p>{{ itemCount() }} {{ (itemCount() === 1 ? 'STOREFRONT.AUTO_STR_471' : 'STOREFRONT.AUTO_STR_448') | translate }}</p>
-      </div>
+    @if (config().showHeader !== false) {
+      <section class="lk-cart-heading">
+        <div>
+          <h1>{{ config().headerTitle | localize: config().headerTitleAr : config().headerTitleEn }}</h1>
+          <p>{{ itemCount() }} {{ (itemCount() === 1 ? 'STOREFRONT.AUTO_STR_471' : 'STOREFRONT.AUTO_STR_448') | translate }}</p>
+        </div>
 
-      @if (config().showContinueShopping) {
-        <a routerLink="/all-shapers" class="lk-cart-continue">
-          <span>{{ 'STOREFRONT.AUTO_STR_294' | translate }}</span>
-          <lucide-icon [img]="ChevronRight" class="rtl-flip" aria-hidden="true"></lucide-icon>
-        </a>
-      }
-    </section>
+        @if (config().showContinueShopping) {
+          <a routerLink="/all-shapers" class="lk-cart-continue">
+            <span>{{ 'STOREFRONT.AUTO_STR_294' | translate }}</span>
+            <lucide-icon [img]="ChevronRight" class="rtl-flip" aria-hidden="true"></lucide-icon>
+          </a>
+        }
+      </section>
+    }
 
-    @if (displayItems().length > 0) {
+    @if (config().showCartItems !== false && displayItems().length > 0) {
       <section class="lk-cart-list" aria-label='STOREFRONT.AUTO_STR_208'>
         @for (item of displayItems(); track item.cartItem.product.id + '-' + item.cartItem.size) {
           <article class="lk-cart-item">
-            <a [routerLink]="['/product', item.cartItem.product.id]" class="lk-cart-item__image">
-              <img [src]="item.image" [alt]="item.nameAr" loading="lazy" decoding="async" />
-            </a>
+            @if (config().showProductImage !== false) {
+              <a [routerLink]="['/product', item.cartItem.product.id]" class="lk-cart-item__image">
+                <img [src]="item.image" [alt]="item.nameAr" loading="lazy" decoding="async" />
+              </a>
+            }
 
             <button
               type="button"
@@ -101,24 +105,26 @@
       </section>
 
       <section class="lk-cart-checkout-grid">
-        <div class="lk-cart-summary">
-          @if (config().showSubtotal) {
-            <div><span>{{ 'COMMON.SUBTOTAL' | translate }}</span><strong>{{ subtotal() | number }} {{ 'COMMON.CURRENCY' | translate }}</strong></div>
-          }
-          @if (config().showShipping) {
-            <div><span>{{ 'DASHBOARD.AUTO_STR_354' | translate }}</span><strong>{{ shipping() | number }} {{ 'COMMON.CURRENCY' | translate }}</strong></div>
-          }
-          @if (config().showDiscount) {
-            <div class="is-discount"><span>{{ 'COMMON.DISCOUNT' | translate }}</span><strong>-{{ discount() | number }} {{ 'COMMON.CURRENCY' | translate }}</strong></div>
-          }
-          @if (config().showTotal) {
-            <div class="lk-cart-summary__total">
-              <span>{{ 'CART.TOTAL' | translate }}</span>
-              <strong>{{ total() | number }} <small>{{ 'COMMON.CURRENCY' | translate }}</small></strong>
-            </div>
-          }
-          <p>{{ 'STOREFRONT.AUTO_STR_117' | translate }}</p>
-        </div>
+        @if (config().showOrderSummary !== false) {
+          <div class="lk-cart-summary">
+            @if (config().showSubtotal) {
+              <div><span>{{ 'COMMON.SUBTOTAL' | translate }}</span><strong>{{ subtotal() | number }} {{ 'COMMON.CURRENCY' | translate }}</strong></div>
+            }
+            @if (config().showShipping) {
+              <div><span>{{ 'DASHBOARD.AUTO_STR_354' | translate }}</span><strong>{{ shipping() | number }} {{ 'COMMON.CURRENCY' | translate }}</strong></div>
+            }
+            @if (config().showDiscount) {
+              <div class="is-discount"><span>{{ 'COMMON.DISCOUNT' | translate }}</span><strong>-{{ discount() | number }} {{ 'COMMON.CURRENCY' | translate }}</strong></div>
+            }
+            @if (config().showTotal) {
+              <div class="lk-cart-summary__total">
+                <span>{{ 'CART.TOTAL' | translate }}</span>
+                <strong>{{ total() | number }} <small>{{ 'COMMON.CURRENCY' | translate }}</small></strong>
+              </div>
+            }
+            <p>{{ 'STOREFRONT.AUTO_STR_117' | translate }}</p>
+          </div>
+        }
 
         @if (config().showCouponSection) {
           <div class="lk-cart-coupon">
@@ -136,7 +142,7 @@
           </div>
         }
       </section>
-    } @else {
+    } @else if (config().showEmptyCartSection !== false) {
       @if (config().emptyCartIllustration) {
         <section class="lk-cart-empty" aria-label='CART.EMPTY'>
           <div class="lk-cart-empty__illustration" aria-hidden="true">

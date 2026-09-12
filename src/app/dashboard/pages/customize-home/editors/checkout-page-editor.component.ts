@@ -20,7 +20,7 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
                 <p class="text-sm text-gray-500">{{ 'DASHBOARD.AUTO_STR_24' | translate }}</p>
             </div>
 
-            <app-section-card title="رأس الصفحة" [index]="0" [enabled]="true" [isFirst]="true" [isLast]="false" (toggle)="noop()" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+            <app-section-card title="رأس الصفحة" [index]="0" [enabled]="config().showHeader !== false" [isFirst]="true" [isLast]="false" (toggle)="updateConfig({ showHeader: $event })" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
                 <app-bilingual-input title="DASHBOARD.AUTO_STR_178" labelAr="عربي / AR" labelEn="English / EN" 
                 [valueAr]="$any(config())['headerTitleAr'] || ''" 
                 [valueEn]="$any(config())['headerTitleEn'] || ''" 
@@ -31,7 +31,22 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
                 (valueChange)="updateBilingualField('headerSubtitle', $event.lang, $event.value)"></app-bilingual-input>
             </app-section-card>
 
-            <app-section-card title="الأقسام والنصوص" [index]="1" [enabled]="true" [isFirst]="false" [isLast]="false" (toggle)="noop()" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+            <app-section-card title="الأقسام والنصوص" [index]="1" [showToggle]="false" [enabled]="true" [isFirst]="false" [isLast]="false" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
+                    <label class="flex items-center justify-between p-2 bg-gray-50 rounded-md border border-gray-100 cursor-pointer">
+                        <span class="text-xs font-bold text-gray-700">بيانات العميل</span>
+                        <input type="checkbox" [ngModel]="config().showCustomerInfo !== false" (ngModelChange)="updateConfig({showCustomerInfo: $event})" class="rounded text-blue-600 focus:ring-blue-500" />
+                    </label>
+                    <label class="flex items-center justify-between p-2 bg-gray-50 rounded-md border border-gray-100 cursor-pointer">
+                        <span class="text-xs font-bold text-gray-700">طريقة الدفع</span>
+                        <input type="checkbox" [ngModel]="config().showPaymentInfo !== false" (ngModelChange)="updateConfig({showPaymentInfo: $event})" class="rounded text-blue-600 focus:ring-blue-500" />
+                    </label>
+                    <label class="flex items-center justify-between p-2 bg-gray-50 rounded-md border border-gray-100 cursor-pointer">
+                        <span class="text-xs font-bold text-gray-700">ملخص الطلب</span>
+                        <input type="checkbox" [ngModel]="config().showOrderSummary !== false" (ngModelChange)="updateConfig({showOrderSummary: $event})" class="rounded text-blue-600 focus:ring-blue-500" />
+                    </label>
+                </div>
+
                 <app-bilingual-input title="DASHBOARD.AUTO_STR_163" labelAr="عربي / AR" labelEn="English / EN" 
                 [valueAr]="$any(config())['customerInfoTitleAr'] || ''" 
                 [valueEn]="$any(config())['customerInfoTitleEn'] || ''" 
@@ -60,7 +75,7 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
                 (valueChange)="updateBilingualField('safeShoppingText', $event.lang, $event.value)"></app-bilingual-input>
             </app-section-card>
             
-            <app-section-card title="حالة السلة الفارغة" [index]="2" [enabled]="true" [isFirst]="false" [isLast]="false" (toggle)="noop()" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+            <app-section-card title="حالة السلة الفارغة" [index]="2" [enabled]="config().showEmptyState !== false" [isFirst]="false" [isLast]="false" (toggle)="updateConfig({ showEmptyState: $event })" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
                 <app-bilingual-input title="COMMON.ADDRESS" labelAr="عربي / AR" labelEn="English / EN" 
                 [valueAr]="$any(config())['emptyStateTitleAr'] || ''" 
                 [valueEn]="$any(config())['emptyStateTitleEn'] || ''" 
@@ -75,7 +90,7 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
                 (valueChange)="updateBilingualField('emptyStateCta', $event.lang, $event.value)"></app-bilingual-input>
             </app-section-card>
 
-            <app-section-card title="مميزات الشراء" [index]="3" [enabled]="config().showTrustBadges" [isFirst]="false" [isLast]="true" (toggle)="updateConfig({showTrustBadges: $event})" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()" [addAction]="{ label: 'إضافة ميزة', onClick: addTrustBadge.bind(this) }">
+            <app-section-card title="مميزات الشراء" [index]="3" [enabled]="config().showTrustBadges !== false" [isFirst]="false" [isLast]="true" (toggle)="updateConfig({showTrustBadges: $event})" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()" [addAction]="{ label: 'إضافة ميزة', onClick: addTrustBadge.bind(this) }">
                 <div class="flex flex-col gap-3 mt-3">
                     <div *ngFor="let badge of config().trustBadges; let idx = index; trackBy: trackByIndex" class="flex gap-2 bg-gray-50 border border-gray-200 rounded-lg p-3">
                         <div class="flex flex-col gap-2 flex-1">

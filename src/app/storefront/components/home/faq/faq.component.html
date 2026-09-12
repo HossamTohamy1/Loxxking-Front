@@ -1,8 +1,10 @@
 <section class="lk-faq-section {{className}}" aria-labelledby="lk-faq-title">
-    <header class="lk-faq-section__intro">
-        <h2 id="lk-faq-title">{{ config().title | localize: config().titleAr : config().titleEn }}</h2>
-        <p>{{ config().subtitle | localize: config().subtitleAr : config().subtitleEn }}</p>
-    </header>
+    @if (config().showIntro !== false) {
+        <header class="lk-faq-section__intro">
+            <h2 id="lk-faq-title">{{ config().title | localize: config().titleAr : config().titleEn }}</h2>
+            <p>{{ config().subtitle | localize: config().subtitleAr : config().subtitleEn }}</p>
+        </header>
+    }
 
     @if (config().showSearch) {
         <label class="lk-faq-search">
@@ -11,33 +13,35 @@
         </label>
     }
 
-    <div class="lk-faq-list">
-        @if (filteredItems().length > 0) {
-            @for (item of filteredItems(); track item.id) {
-                <article class="lk-faq-item" [class.is-open]="openId() === item.id">
-                    <button type="button" class="lk-faq-question" (click)="toggleOpen(item.id)" [attr.aria-expanded]="openId() === item.id">
-                        <span>{{item.question | localize: item.questionAr : item.questionEn }}</span>
-                        <span class="lk-faq-question__toggle" aria-hidden="true">
-                            @if (openId() === item.id) {
-                                <lucide-icon name="minus"></lucide-icon>
-                            } @else {
-                                <lucide-icon name="plus"></lucide-icon>
-                            }
-                        </span>
-                    </button>
-                    @if (openId() === item.id) {
-                        <p class="lk-faq-answer">{{item.answer | localize: item.answerAr : item.answerEn }}</p>
-                    }
-                </article>
+    @if (config().showFaqList !== false) {
+        <div class="lk-faq-list">
+            @if (filteredItems().length > 0) {
+                @for (item of filteredItems(); track item.id) {
+                    <article class="lk-faq-item" [class.is-open]="openId() === item.id">
+                        <button type="button" class="lk-faq-question" (click)="toggleOpen(item.id)" [attr.aria-expanded]="openId() === item.id">
+                            <span>{{item.question | localize: item.questionAr : item.questionEn }}</span>
+                            <span class="lk-faq-question__toggle" aria-hidden="true">
+                                @if (openId() === item.id) {
+                                    <lucide-icon name="minus"></lucide-icon>
+                                } @else {
+                                    <lucide-icon name="plus"></lucide-icon>
+                                }
+                            </span>
+                        </button>
+                        @if (openId() === item.id) {
+                            <p class="lk-faq-answer">{{item.answer | localize: item.answerAr : item.answerEn }}</p>
+                        }
+                    </article>
+                }
+            } @else {
+                <div class="lk-faq-no-results">
+                    <lucide-icon name="search" aria-hidden="true"></lucide-icon>
+                    <strong>{{ 'SEARCH.NO_RESULTS' | translate }}</strong>
+                    <span>{{ 'SEARCH.TRY_DIFFERENT' | translate }}</span>
+                </div>
             }
-        } @else {
-            <div class="lk-faq-no-results">
-                <lucide-icon name="search" aria-hidden="true"></lucide-icon>
-                <strong>{{ 'SEARCH.NO_RESULTS' | translate }}</strong>
-                <span>{{ 'SEARCH.TRY_DIFFERENT' | translate }}</span>
-            </div>
-        }
-    </div>
+        </div>
+    }
 
     @if (config().showSupportCard) {
         <a routerLink="/chat" class="lk-faq-support-card">

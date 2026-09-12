@@ -18,6 +18,7 @@ export interface CheckoutTrustBadge {
 }
 
 export interface CheckoutPageConfig {
+    showHeader: boolean;
     headerTitle: string;
     headerTitleAr?: string;
     headerTitleEn?: string;
@@ -51,6 +52,7 @@ export interface CheckoutPageConfig {
     showTrustBadges: boolean;
     trustBadges: CheckoutTrustBadge[];
     
+    showEmptyState?: boolean;
     emptyStateTitle: string;
     emptyStateTitleAr?: string;
     emptyStateTitleEn?: string;
@@ -63,6 +65,7 @@ export interface CheckoutPageConfig {
 }
 
 const initialConfig: CheckoutPageConfig = {
+    showHeader: true,
     headerTitle: 'إتمام الطلب',
     headerTitleAr: 'إتمام الطلب',
     headerTitleEn: 'Checkout',
@@ -101,6 +104,7 @@ const initialConfig: CheckoutPageConfig = {
         { id: '4', icon: 'ShieldCheck', title: 'دفع آمن', titleAr: 'دفع آمن', titleEn: 'Secure Payment', subtitle: '100% آمن', subtitleAr: '100% آمن', subtitleEn: '100% Secure' }
     ],
     
+    showEmptyState: true,
     emptyStateTitle: 'لا توجد منتجات لإتمام الطلب',
     emptyStateTitleAr: 'لا توجد منتجات لإتمام الطلب',
     emptyStateTitleEn: 'No items to checkout',

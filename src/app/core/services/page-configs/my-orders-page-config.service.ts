@@ -7,6 +7,7 @@ const INSTANCE_ID = typeof crypto !== 'undefined' && crypto.randomUUID
   : Math.random().toString(36).substring(2) + Date.now().toString(36);
 
 export interface MyOrdersPageConfig {
+    showHeader: boolean;
     headerTitle: string;
     headerSubtitle: string;
     
@@ -14,6 +15,7 @@ export interface MyOrdersPageConfig {
     orderPlaceholder: string;
     buttonText: string;
     
+    showEmptyState: boolean;
     emptyTitle: string;
     emptyText: string;
     emptyCta: string;
@@ -28,12 +30,15 @@ export interface MyOrdersPageConfig {
 
 
 const initialConfig: MyOrdersPageConfig = {
+    showHeader: true,
     headerTitle: 'تتبع',
     headerSubtitle: 'أدخل رقم الهاتف ورقم الطلب لمعرفة حالة طلبك بسهولة',
     
     phonePlaceholder: 'رقم الهاتف',
     orderPlaceholder: 'رقم الطلب',
     buttonText: 'تتبع',
+    
+    showEmptyState: true,
     
     emptyTitle: 'ليس لديك طلبات مشحونة',
     emptyText: 'لا يوجد حاليًا أي طلبات مكتملة أو قيد الشحن. ابدئي التسوق وسيظهر طلبك هنا بعد إتمامه.',

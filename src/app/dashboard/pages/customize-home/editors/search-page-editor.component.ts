@@ -21,14 +21,14 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
         <p class="text-sm text-gray-500">{{ 'DASHBOARD.AUTO_STR_32' | translate }}</p>
       </div>
 
-      <app-section-card title="إعدادات حقل البحث" [index]="0" [enabled]="true" [isFirst]="true" [isLast]="false" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+      <app-section-card title="إعدادات حقل البحث" [index]="0" [enabled]="localConfig.showSearchField !== false" [isFirst]="true" [isLast]="false" (toggle)="updateToggle('showSearchField', $event)" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
         <app-bilingual-input title="نص حقل البحث (Placeholder)" labelAr="عربي / AR" labelEn="English / EN" 
                 [(valueAr)]="localConfig.searchPlaceholderAr" 
                 [(valueEn)]="localConfig.searchPlaceholderEn" 
                 (valueChange)="updateBilingualField('searchPlaceholder', $event.lang, $event.value)"></app-bilingual-input>
       </app-section-card>
 
-      <app-section-card title="عمليات البحث الشائعة" [index]="1" [enabled]="true" [isFirst]="false" [isLast]="false" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()" [addAction]="{ label: 'إضافة كلمة', onClick: addSuggestion.bind(this) }">
+      <app-section-card title="عمليات البحث الشائعة" [index]="1" [enabled]="localConfig.showQuickSuggestions !== false" [isFirst]="false" [isLast]="false" (toggle)="updateToggle('showQuickSuggestions', $event)" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()" [addAction]="{ label: 'إضافة كلمة', onClick: addSuggestion.bind(this) }">
         <app-bilingual-input title="عنوان القسم" labelAr="عربي / AR" labelEn="English / EN" 
                 [(valueAr)]="localConfig.quickSuggestionsTitleAr" 
                 [(valueEn)]="localConfig.quickSuggestionsTitleEn" 
@@ -52,14 +52,14 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
         </div>
       </app-section-card>
 
-      <app-section-card title="عمليات البحث الأخيرة" [index]="2" [enabled]="localConfig.showRecentSearch" [isFirst]="false" [isLast]="false" (toggle)="updateToggle('showRecentSearch', $event)" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+      <app-section-card title="عمليات البحث الأخيرة" [index]="2" [enabled]="localConfig.showRecentSearch !== false" [isFirst]="false" [isLast]="false" (toggle)="updateToggle('showRecentSearch', $event)" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
         <app-bilingual-input title="عنوان القسم" labelAr="عربي / AR" labelEn="English / EN" 
                 [(valueAr)]="localConfig.recentSearchTitleAr" 
                 [(valueEn)]="localConfig.recentSearchTitleEn" 
                 (valueChange)="updateBilingualField('recentSearchTitle', $event.lang, $event.value)"></app-bilingual-input>
       </app-section-card>
 
-      <app-section-card title="حالة عدم وجود نتائج" [index]="3" [enabled]="true" [isFirst]="false" [isLast]="false" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+      <app-section-card title="حالة عدم وجود نتائج" [index]="3" [enabled]="localConfig.showNoResults !== false" [isFirst]="false" [isLast]="false" (toggle)="updateToggle('showNoResults', $event)" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
         <app-bilingual-input title="العنوان" labelAr="عربي / AR" labelEn="English / EN" 
                 [(valueAr)]="localConfig.noResultsTitleAr" 
                 [(valueEn)]="localConfig.noResultsTitleEn" 
@@ -70,14 +70,14 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
                 (valueChange)="updateBilingualField('noResultsSubtitle', $event.lang, $event.value)"></app-bilingual-input>
       </app-section-card>
 
-      <app-section-card title="المنتجات المقترحة" [index]="4" [enabled]="true" [isFirst]="false" [isLast]="false" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+      <app-section-card title="المنتجات المقترحة" [index]="4" [enabled]="localConfig.showSuggestedProducts !== false" [isFirst]="false" [isLast]="false" (toggle)="updateToggle('showSuggestedProducts', $event)" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
         <app-bilingual-input title="عنوان المنتجات المقترحة" labelAr="عربي / AR" labelEn="English / EN" 
                 [(valueAr)]="localConfig.suggestedProductsTitleAr" 
                 [(valueEn)]="localConfig.suggestedProductsTitleEn" 
                 (valueChange)="updateBilingualField('suggestedProductsTitle', $event.lang, $event.value)"></app-bilingual-input>
       </app-section-card>
 
-      <app-section-card title="بطاقة الدعم والمساعدة" [index]="5" [enabled]="localConfig.showSupportCard" [isFirst]="false" [isLast]="true" (toggle)="updateToggle('showSupportCard', $event)" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
+      <app-section-card title="بطاقة الدعم والمساعدة" [index]="5" [enabled]="localConfig.showSupportCard !== false" [isFirst]="false" [isLast]="true" (toggle)="updateToggle('showSupportCard', $event)" (duplicate)="noop()" (delete)="noop()" (moveUp)="noop()" (moveDown)="noop()" (onDragStart)="noop()" (onDragEnd)="noop()" (onDragOver)="noop()" (onDrop)="noop()">
         <app-bilingual-input title="عنوان البطاقة" labelAr="عربي / AR" labelEn="English / EN" 
                 [(valueAr)]="localConfig.supportCardTitleAr" 
                 [(valueEn)]="localConfig.supportCardTitleEn" 
@@ -114,6 +114,13 @@ export class SearchPageEditorComponent implements OnInit, OnDestroy {
   private initLocalConfig() {
     const raw = this.configService.pageConfig();
     const c: any = JSON.parse(JSON.stringify(raw));
+
+    c.showSearchField = c.showSearchField !== false;
+    c.showQuickSuggestions = c.showQuickSuggestions !== false;
+    c.showRecentSearch = c.showRecentSearch !== false;
+    c.showNoResults = c.showNoResults !== false;
+    c.showSuggestedProducts = c.showSuggestedProducts !== false;
+    c.showSupportCard = c.showSupportCard !== false;
     
     // Backfill localized fields if needed
     const fields = [

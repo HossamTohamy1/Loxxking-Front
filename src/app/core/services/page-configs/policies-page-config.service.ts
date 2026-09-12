@@ -26,15 +26,19 @@ export interface PolicyConfig {
 }
 
 export interface PoliciesPageConfig {
+    showTitle?: boolean;
     title: string;
     subtitle: string;
+    showPoliciesGrid?: boolean;
     policies: PolicyConfig[];
 }
 
 
 const initialConfig: PoliciesPageConfig = {
+    showTitle: true,
     title: 'السياسات والمعلومات',
     subtitle: 'تعرف على سياسات المتجر وشروط استخدامه',
+    showPoliciesGrid: true,
     policies: [
         {
             key: 'privacy',

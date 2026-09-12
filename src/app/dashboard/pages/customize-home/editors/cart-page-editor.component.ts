@@ -20,16 +20,16 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
         <p class="text-sm text-gray-500">{{ 'DASHBOARD.AUTO_STR_16' | translate }}</p>
       </div>
 
-      <app-section-card title="رأس الصفحة" [index]="0" [enabled]="true" [isFirst]="true" [isLast]="false"
-        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false">
+      <app-section-card title="رأس الصفحة" [index]="0" [enabled]="config().showHeader !== false" [isFirst]="true" [isLast]="false"
+        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false" (toggle)="updateConfig({ showHeader: $event })">
         <app-bilingual-input title="عنوان الصفحة" labelAr="عربي / AR" labelEn="English / EN" 
                 [valueAr]="$any(config())['headerTitleAr'] || ''" 
                 [valueEn]="$any(config())['headerTitleEn'] || ''" 
                 (valueChange)="updateBilingualField('headerTitle', $event.lang, $event.value)"></app-bilingual-input>
       </app-section-card>
 
-      <app-section-card title="عناصر السلة" [index]="1" [enabled]="true" [isFirst]="false" [isLast]="false"
-        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false">
+      <app-section-card title="عناصر السلة" [index]="1" [enabled]="config().showCartItems !== false" [isFirst]="false" [isLast]="false"
+        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false" (toggle)="updateConfig({ showCartItems: $event })">
         <div class="grid grid-cols-2 gap-2">
           <ng-container *ngTemplateOutlet="checkboxTemplate; context: { label: 'إظهار صورة المنتج', field: 'showProductImage' }"></ng-container>
           <ng-container *ngTemplateOutlet="checkboxTemplate; context: { label: 'أزرار الكمية', field: 'showQuantityControls' }"></ng-container>
@@ -56,8 +56,8 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
         </div>
       </app-section-card>
 
-      <app-section-card title="ملخص الطلب" [index]="3" [enabled]="true" [isFirst]="false" [isLast]="false"
-        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false">
+      <app-section-card title="ملخص الطلب" [index]="3" [enabled]="config().showOrderSummary !== false" [isFirst]="false" [isLast]="false"
+        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false" (toggle)="updateConfig({ showOrderSummary: $event })">
         <div class="grid grid-cols-2 gap-2">
           <ng-container *ngTemplateOutlet="checkboxTemplate; context: { label: 'المجموع الفرعي', field: 'showSubtotal' }"></ng-container>
           <ng-container *ngTemplateOutlet="checkboxTemplate; context: { label: 'رسوم الشحن', field: 'showShipping' }"></ng-container>
@@ -72,8 +72,8 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
         </div>
       </app-section-card>
 
-      <app-section-card title="السلة الفارغة" [index]="4" [enabled]="true" [isFirst]="false" [isLast]="false"
-        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false">
+      <app-section-card title="السلة الفارغة" [index]="4" [enabled]="config().showEmptyCartSection !== false" [isFirst]="false" [isLast]="false"
+        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false" (toggle)="updateConfig({ showEmptyCartSection: $event })">
         <div class="flex flex-col gap-2">
           <ng-container *ngTemplateOutlet="checkboxTemplate; context: { label: 'إظهار الرسم التوضيحي', field: 'emptyCartIllustration' }"></ng-container>
           <app-bilingual-input title="نص السلة الفارغة" labelAr="عربي / AR" labelEn="English / EN" 

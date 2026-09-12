@@ -18,10 +18,12 @@ export interface TrustBadgeConfig {
 }
 
 export interface CartPageConfig {
+    showHeader: boolean;
     headerTitle: string;
     headerTitleAr?: string;
     headerTitleEn?: string;
     
+    showCartItems: boolean;
     showProductImage: boolean;
     showQuantityControls: boolean;
     showRemoveButton: boolean;
@@ -38,6 +40,7 @@ export interface CartPageConfig {
     couponButtonTextAr?: string;
     couponButtonTextEn?: string;
 
+    showOrderSummary: boolean;
     showSubtotal: boolean;
     showShipping: boolean;
     showDiscount: boolean;
@@ -47,6 +50,7 @@ export interface CartPageConfig {
     checkoutButtonTextAr?: string;
     checkoutButtonTextEn?: string;
 
+    showEmptyCartSection: boolean;
     emptyCartIllustration: boolean;
     emptyCartText: string;
     emptyCartTextAr?: string;
@@ -59,10 +63,12 @@ export interface CartPageConfig {
 
 
 const initialConfig: CartPageConfig = {
+    showHeader: true,
     headerTitle: 'سلة التسوق',
     headerTitleAr: 'سلة التسوق',
     headerTitleEn: 'Shopping Cart',
     
+    showCartItems: true,
     showProductImage: true,
     showQuantityControls: true,
     showRemoveButton: true,
@@ -79,6 +85,7 @@ const initialConfig: CartPageConfig = {
     couponButtonTextAr: 'تطبيق',
     couponButtonTextEn: 'Apply',
 
+    showOrderSummary: true,
     showSubtotal: true,
     showShipping: true,
     showDiscount: true,
@@ -88,6 +95,7 @@ const initialConfig: CartPageConfig = {
     checkoutButtonTextAr: 'إتمام الطلب',
     checkoutButtonTextEn: 'Checkout',
 
+    showEmptyCartSection: true,
     emptyCartIllustration: true,
     emptyCartText: 'السلة فارغة',
     emptyCartTextAr: 'السلة فارغة',

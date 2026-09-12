@@ -7,6 +7,7 @@ const INSTANCE_ID = typeof crypto !== 'undefined' && crypto.randomUUID
   : Math.random().toString(36).substring(2) + Date.now().toString(36);
 
 export interface AllShapersPageConfig {
+  showHeader: boolean;
   headerTitle: string;
   headerTitleAr?: string;
   headerTitleEn?: string;
@@ -15,6 +16,7 @@ export interface AllShapersPageConfig {
   showReviewsCount: boolean;
   showOriginalPrice: boolean;
 
+  showEmptyState: boolean;
   emptyTitle: string;
   emptyTitleAr?: string;
   emptyTitleEn?: string;
@@ -27,6 +29,7 @@ export interface AllShapersPageConfig {
 }
 
 const initialConfig: AllShapersPageConfig = {
+  showHeader: true,
   headerTitle: 'كل المشدات',
   headerTitleAr: 'كل المشدات',
   headerTitleEn: 'All Shapers',
@@ -34,6 +37,8 @@ const initialConfig: AllShapersPageConfig = {
   showRating: true,
   showReviewsCount: true,
   showOriginalPrice: true,
+
+  showEmptyState: true,
 
   emptyTitle: 'لا توجد منتجات بهذه المواصفات',
   emptyTitleAr: 'لا توجد منتجات بهذه المواصفات',

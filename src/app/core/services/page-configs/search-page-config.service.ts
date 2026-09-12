@@ -7,9 +7,11 @@ const INSTANCE_ID = typeof crypto !== 'undefined' && crypto.randomUUID
   : Math.random().toString(36).substring(2) + Date.now().toString(36);
 
 export interface SearchPageConfig {
+    showSearchField: boolean;
     searchPlaceholder: string;
     searchPlaceholderAr?: string;
     searchPlaceholderEn?: string;
+    showQuickSuggestions: boolean;
     quickSuggestionsTitle: string;
     quickSuggestionsTitleAr?: string;
     quickSuggestionsTitleEn?: string;
@@ -18,6 +20,7 @@ export interface SearchPageConfig {
     recentSearchTitleAr?: string;
     recentSearchTitleEn?: string;
     showRecentSearch: boolean;
+    showNoResults: boolean;
     noResultsTitle: string;
     noResultsTitleAr?: string;
     noResultsTitleEn?: string;
@@ -31,15 +34,18 @@ export interface SearchPageConfig {
     supportCardSubtitle: string;
     supportCardSubtitleAr?: string;
     supportCardSubtitleEn?: string;
+    showSuggestedProducts: boolean;
     suggestedProductsTitle: string;
     suggestedProductsTitleAr?: string;
     suggestedProductsTitleEn?: string;
 }
 
 const initialConfig: SearchPageConfig = {
+    showSearchField: true,
     searchPlaceholder: 'ابحث عن...',
     searchPlaceholderAr: 'ابحث عن...',
     searchPlaceholderEn: 'Search for...',
+    showQuickSuggestions: true,
     quickSuggestionsTitle: 'عمليات بحث شائعة:',
     quickSuggestionsTitleAr: 'عمليات بحث شائعة:',
     quickSuggestionsTitleEn: 'Popular Searches:',
@@ -53,6 +59,7 @@ const initialConfig: SearchPageConfig = {
     recentSearchTitleAr: 'عمليات البحث الأخيرة',
     recentSearchTitleEn: 'Recent Searches',
     showRecentSearch: true,
+    showNoResults: true,
     noResultsTitle: 'لم يتم العثور على أي منتج',
     noResultsTitleAr: 'لم يتم العثور على أي منتج',
     noResultsTitleEn: 'No products found',
@@ -66,6 +73,7 @@ const initialConfig: SearchPageConfig = {
     supportCardSubtitle: 'تواصل معنا عبر واتساب للمساعدة',
     supportCardSubtitleAr: 'تواصل معنا عبر واتساب للمساعدة',
     supportCardSubtitleEn: 'Contact us via WhatsApp for help',
+    showSuggestedProducts: true,
     suggestedProductsTitle: 'منتجات مقترحة',
     suggestedProductsTitleAr: 'منتجات مقترحة',
     suggestedProductsTitleEn: 'Suggested Products',

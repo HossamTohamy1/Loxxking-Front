@@ -18,16 +18,16 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
         <p class="text-sm text-gray-500">إدارة صفحة 'كل المشدات'</p>
       </div>
 
-      <app-section-card title="رأس الصفحة" [index]="0" [enabled]="true" [isFirst]="true" [isLast]="false"
-        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false" (toggle)="$event">
+      <app-section-card title="رأس الصفحة" [index]="0" [enabled]="config().showHeader !== false" [isFirst]="true" [isLast]="false"
+        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false" (toggle)="updateConfig({ showHeader: $event })">
         <app-bilingual-input title="DASHBOARD.AUTO_STR_178" labelAr="عربي / AR" labelEn="English / EN" 
                 [valueAr]="$any(config())['headerTitleAr'] || ''" 
                 [valueEn]="$any(config())['headerTitleEn'] || ''" 
                 (valueChange)="updateBilingualField('headerTitle', $event.lang, $event.value)"></app-bilingual-input>
       </app-section-card>
 
-      <app-section-card title="تفاصيل بطاقة المنتج" [index]="1" [enabled]="true" [isFirst]="false" [isLast]="false"
-        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false" (toggle)="$event">
+      <app-section-card title="تفاصيل بطاقة المنتج" [index]="1" [showToggle]="false" [enabled]="true" [isFirst]="false" [isLast]="false"
+        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false">
         <div class="flex items-center gap-2 mb-2">
           <input type="checkbox" [ngModel]="config().showRating" (ngModelChange)="updateConfig({ showRating: $event })" class="rounded text-blue-600 focus:ring-blue-500" />
           <span class="text-sm font-medium">إظهار النجوم (التقييم)</span>
@@ -42,8 +42,8 @@ import { getEnglishTranslation } from '../../../../core/utils/config-sanitizer';
         </div>
       </app-section-card>
 
-      <app-section-card title="حالة عدم وجود نتائج" [index]="2" [enabled]="true" [isFirst]="false" [isLast]="true"
-        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false" (toggle)="$event">
+      <app-section-card title="حالة عدم وجود نتائج" [index]="2" [enabled]="config().showEmptyState !== false" [isFirst]="false" [isLast]="true"
+        [draggable]="false" [showReorder]="false" [showCopy]="false" [showDelete]="false" (toggle)="updateConfig({ showEmptyState: $event })">
         <app-bilingual-input title="COMMON.ADDRESS" labelAr="عربي / AR" labelEn="English / EN" 
                 [valueAr]="$any(config())['emptyTitleAr'] || ''" 
                 [valueEn]="$any(config())['emptyTitleEn'] || ''" 
